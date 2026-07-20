@@ -16,7 +16,7 @@ Four things broke along the way, and only one of them was in the course material
 
 ## The mental model I started with
 
-MCP (Model Context Protocol) is a standard for connecting a model to things outside itself. It defines three kinds of thing a server can expose:
+MCP is a standard for connecting a model to things outside itself. It defines three kinds of thing a server can expose:
 
 - **Tools** are actions. Run a scan, query a database, call an API.
 - **Resources** are data to read. Files, configs, knowledge bases.
@@ -207,13 +207,21 @@ It did surface two things the Claude Code run hadn't mentioned. A lot of those r
 
 I don't have a tidy conclusion about why the two runs differed. Same prompt, same tools, different client, different answer.
 
-### And the slide deck
+### Using it for productivity work instead of code work
+
+Having it in Desktop opens up a different kind of use. Claude Code is where I build things. Desktop is where I'd go for the productivity side, and it can generate documents, so with my tools attached the two combine. I wanted to see what that actually looked like, so I asked for something deliberately non-technical:
+
+> Can you create a powerpoint slide deck showing details from 2-3 random Hayabusa rules as a proof of concept?
+
+It queried my server for rules, picked three with some variety between them, and built the deck out of what came back.
 
 ![Generating a PowerPoint from live MCP rule data](images/mcp-hayabusa/mcptopowerpointinclaude.png)
 
 Five slides, real rule IDs, log sources, statuses, file paths and ATT&CK mappings pulled live from my server. The flag on it is the interesting part: the tool returns rule *metadata*, not the YAML detection logic, so the "what it catches" lines are characterization from tags and filenames rather than from the rule body. That traces directly back to skipping PyYAML for the line-based extractor. Fine when the question is "what rules exist." Limiting when it's "what does this rule actually detect."
 
-Having used both, the split I'd draw is this. Building and iterating on the server belongs in Claude Code, because that's where the file editing, the test runs and the shell live. Anything that ends in a document belongs in Desktop. Actually using the tools for analysis works fine in either.
+That flow is the part I'd want to keep. I never wrote a line of PowerPoint code, and the deck isn't made-up filler either, it's built on data pulled from the tool I made. Reporting and communicating findings is a real part of defensive work, and this is the first time I've seen the technical side and the writing-it-up side connect without me copying things between them.
+
+Having used both surfaces now, the split I'd draw is this. Building and iterating on the server belongs in Claude Code, because that's where the file editing, the test runs and the shell live. Anything that ends in a document belongs in Desktop. Actually using the tools for analysis works fine in either.
 
 ---
 
