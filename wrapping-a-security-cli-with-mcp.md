@@ -6,12 +6,11 @@
 
 ## What this is, and what it isn't
 
-This is the second thing I built while working through *AI Cyber Defense Ops*. Module 2 was a Sysmon parser, a Python script that Claude wrote and Claude ran. This one is different: instead of writing code for Claude to execute, I built a tool that Claude can pick up and use on its own, in any conversation, without ever reading the implementation.
+This is the second thing I built while working through *AI Cyber Defense Ops*. Module 2 was a Sysmon parser, a Python script that Claude Code wrote and Claude ran. This one is different: instead of writing code for Claude to execute, I built a tool in Claude Code that Claude can pick up and use on its own, in any conversation, without ever reading the implementation.
 
-The tool wraps Hayabusa, which scans Windows event logs against a big pile of Sigma detection rules. Nothing about the wrapper is clever. What made it worth writing up is that four separate things went wrong, and only one of them was in the course material. The other three were my machine, my code, and a Windows packaging quirk that had me convinced I hadn't installed an app I was actively using at the time.
+The tool wraps Hayabusa, which scans Windows event logs against a big pile of Sigma detection rules. The wrapper itself is a straightforward piece of code that Claude made for me. What made it worth writing up is that four separate things went wrong, and only one of them was in the course material. The other three were my machine, my code, and a Windows packaging quirk.
 
-I've kept the wrong turns in. They were most of the learning.
-
+There were a couple things that went wrong that I go over and they were good learning experiences.
 ---
 
 ## The mental model I started with
@@ -34,7 +33,7 @@ Claude never sees my Python, but it sees the tool name, description, and input s
 
 ### Starting from the scaffold
 
-New project, `/init`, then a CLAUDE.md describing what I was building: an MCP server exposing a `scan_evtx` tool that runs Hayabusa, returns structured JSON, filters by severity, and handles errors gracefully.
+I started by opening up Claude Code. New project, `/init`, then a CLAUDE.md describing what I was building: an MCP server exposing a `scan_evtx` tool that runs Hayabusa, returns structured JSON, filters by severity, and handles errors gracefully.
 
 ![Claude writing the initial CLAUDE.md for the Hayabusa MCP project](images/mcp-hayabusa/claudesinithayabusa.png)
 
