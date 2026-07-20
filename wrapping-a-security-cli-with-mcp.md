@@ -16,7 +16,7 @@ Four things broke along the way, and only one of them was in the course material
 
 ## The mental model I started with
 
-MCP is a standard for connecting a model to things outside itself. It defines three kinds of thing a server can expose:
+MCP (Model Context Protocol) is a standard for connecting a model to things outside itself. It defines three kinds of thing a server can expose:
 
 - **Tools** are actions. Run a scan, query a database, call an API.
 - **Resources** are data to read. Files, configs, knowledge bases.
