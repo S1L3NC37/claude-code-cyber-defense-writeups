@@ -213,21 +213,21 @@ I don't have a tidy conclusion about why the two runs differed. Same prompt, sam
 
 Five slides, real rule IDs, log sources, statuses, file paths and ATT&CK mappings pulled live from my server. The flag on it is the interesting part: the tool returns rule *metadata*, not the YAML detection logic, so the "what it catches" lines are characterization from tags and filenames rather than from the rule body. That traces directly back to skipping PyYAML for the line-based extractor. Fine when the question is "what rules exist." Limiting when it's "what does this rule actually detect."
 
-![When to use Claude Code versus Claude Desktop](images/mcp-hayabusa/codevsdesktop.png)
+Having used both, the split I'd draw is this. Building and iterating on the server belongs in Claude Code, because that's where the file editing, the test runs and the shell live. Anything that ends in a document belongs in Desktop. Actually using the tools for analysis works fine in either.
 
 ---
 
 ## The pattern underneath
 
-The last part of the module pulls back from Hayabusa specifically and shows the template the whole thing fits into, plus a list of other CLIs worth wrapping the same way.
+The last part of the module pulls back from Hayabusa specifically and shows the template the whole thing fits into.
 
-![The wrapper pattern template](images/mcp-hayabusa/patterntemplate.png)
+Stripped down, every tool I write from here is the same five steps. Check the input is what it claims to be. Assemble the command line. Run it as a subprocess. Parse whatever comes back. Return something structured rather than a wall of text.
 
-![Other CLIs worth wrapping, and the design considerations](images/mcp-hayabusa/toolsanddesign.png)
+The module lists other tools that fit the same mould, and they're all things I'd plausibly want: Chainsaw for another take on EVTX, YARA for pattern matching against files, Sigma CLI for compiling rules to a SIEM, Volatility for memory images, CyberChef for data transformations. The parameters change, the shape doesn't.
 
-The shape is always the same: validate input, build the command, run the subprocess, parse the output, return something structured. Chainsaw, YARA, Sigma CLI, Volatility and CyberChef all fit it.
+It also lists five things to get right, which are worth restating because I hit three of them in this build. Descriptions matter, because they're how Claude decides whether a tool is relevant at all. Return structured output so the model can reason over it. Make errors informative enough that Claude can suggest the fix. Set timeouts, because anything wrapping a real scanner will eventually hang. And watch the security of what you're passing through, since a string from a language model ends up in a subprocess call.
 
-The part I'd been unsure about early on was why this beats just letting Claude run Hayabusa in the shell, which it can already do. Having built it, the answer is four things. A constrained surface instead of an arbitrary command string, so validation has one chokepoint. Output I shaped rather than output I got, which costs a fraction of the context. Knowledge encoded in code instead of re-derived every session. And portability, which is the underrated one, because Claude Desktop has no shell at all and the MCP server is the only way Hayabusa exists there.
+The part I'd been unsure about early on was why this beats just letting Claude run Hayabusa as a shell command itself, which it can already do without any of this. Having built it, the answer is four things. A constrained surface instead of an arbitrary command string, so validation has one chokepoint. Output I shaped rather than output I got, which costs a fraction of the context. Knowledge encoded in code instead of re-derived every session. And portability, which is the underrated one, because Claude Desktop has no shell at all and the MCP server is the only way Hayabusa exists there.
 
 The flip side is that the wrapper is worth it when a workflow is repeated. For a command I'll run twice, the shell is faster and more flexible.
 
