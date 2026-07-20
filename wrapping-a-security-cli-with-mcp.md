@@ -10,7 +10,9 @@ This is the second thing I built while working through *AI Cyber Defense Ops*. M
 
 The tool wraps Hayabusa, which scans Windows event logs against a big pile of Sigma detection rules. The wrapper itself is a straightforward piece of code that Claude made for me. What made it worth writing up is that four separate things went wrong, and only one of them was in the course material. The other three were my machine, my code, and a Windows packaging quirk.
 
-There were a couple things that went wrong that I go over and they were good learning experiences.
+A couple things went wrong that I included and they were good learning experiences.
+
+
 ---
 
 ## The mental model I started with
