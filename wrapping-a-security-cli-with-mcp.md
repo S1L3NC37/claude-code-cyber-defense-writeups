@@ -1,17 +1,16 @@
 # Wrapping a Security CLI with MCP
 
-*Notes from building an MCP server around Hayabusa, and the four things that broke on the way.*
+*Notes from building an MCP server around Hayabusa: how to make one, and what I learned about how MCP actually works.*
 
 ---
 
 ## What this is, and what it isn't
 
-This is the second thing I built while working through *AI Cyber Defense Ops*. Module 2 was a Sysmon parser, a Python script that Claude Code wrote and Claude ran. This one is different: instead of writing code for Claude to execute, I built a tool in Claude Code that Claude can pick up and use on its own, in any conversation, without ever reading the implementation.
+This is the second thing I built while working through *AI Cyber Defense Ops*. The first one was a Sysmon parser, a Python script that I built with Claude. This one is different: instead of writing code for Claude to execute, I built an MCP server in Claude Code, a tool that Claude can pick up and use on its own, in any conversation, without ever reading the implementation.
 
-The tool wraps Hayabusa, which scans Windows event logs against a big pile of Sigma detection rules. The wrapper itself is a straightforward piece of code that Claude made for me. What made it worth writing up is that four separate things went wrong, and only one of them was in the course material. The other three were my machine, my code, and a Windows packaging quirk.
+The tool wraps Hayabusa, which scans Windows event logs against a big pile of Sigma detection rules. What made this worth writing up is what I came away with: how to actually build a server and expose a tool through it, how MCP fits together underneath, and how the same server behaves differently depending on which part of the Claude ecosystem is driving it.
 
-A couple things went wrong that I included and they were good learning experiences.
-
+Four things broke along the way, and only one of them was in the course material. I left those in too, because that's where a lot of it landed.
 
 ---
 
@@ -35,7 +34,7 @@ Claude never sees my Python, but it sees the tool name, description, and input s
 
 ### Starting from the scaffold
 
-I started by opening up Claude Code. New project, `/init`, then a CLAUDE.md describing what I was building: an MCP server exposing a `scan_evtx` tool that runs Hayabusa, returns structured JSON, filters by severity, and handles errors gracefully.
+I built the whole thing in Claude Code. New project, `/init`, then a CLAUDE.md describing what I was building: an MCP server exposing a `scan_evtx` tool that runs Hayabusa, returns structured JSON, filters by severity, and handles errors gracefully.
 
 ![Claude writing the initial CLAUDE.md for the Hayabusa MCP project](images/mcp-hayabusa/claudesinithayabusa.png)
 
